@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { Post } from './entities/post.entity';
+import { OnEvent } from '@nestjs/event-emitter';
+import { USER_EVENTS, UserDeletedEvent } from 'src/user/events/user.events';
 
 @Injectable()
 export class PostService {
@@ -38,4 +40,11 @@ export class PostService {
   remove(id: number) {
     return `This action removes a #${id} post`;
   }
+
+  @OnEvent(USER_EVENTS.DELETED)
+  async handleUserDeleted(event: UserDeletedEvent) {
+    await this.postRepository.delete({ user: { id: event.userId } });
+    console.log(`Posts cleaned up for user ${event.userId}`);
+  }
 }
+

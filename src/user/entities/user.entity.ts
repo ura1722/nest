@@ -21,9 +21,8 @@ export class User {
     @Column()
     createdAt: Date;
 
-    @OneToOne(() => Profile)
-    @JoinColumn()
-    profile: Profile
+    @OneToOne(() => Profile, (profile) => profile.user)
+    profile: Profile;
 
     @OneToMany(() => Post, (post) => post.user) 
     posts: Post[]

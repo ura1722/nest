@@ -7,10 +7,7 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
-  @Post(':id')
-  create(@Param('id', ParseIntPipe) id: number, @Body() createProfileDto: CreateProfileDto) {
-    return this.profileService.create(id, createProfileDto);
-  }
+  
 
   @Get()
   findAll() {
@@ -23,12 +20,12 @@ export class ProfileController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto) {
+  update(@Param('id', ParseIntPipe) id: string, @Body() updateProfileDto: UpdateProfileDto) {
     return this.profileService.update(+id, updateProfileDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: string) {
     return this.profileService.remove(+id);
   }
 }
